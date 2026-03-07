@@ -1,6 +1,6 @@
-streamlit==1.32.0
-tensorflow==2.13.0
+streamlit
+tensorflow-cpu==2.16.1
 numpy
 pillow
-matplotlib
 pandas
+matplotlib
