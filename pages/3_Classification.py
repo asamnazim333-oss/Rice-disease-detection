@@ -1,12 +1,17 @@
 import streamlit as st
-from groq import Groq
+from openai import OpenAI
+import os
 from PIL import Image
 import base64
 import io
 
-st.title("🤖 Classification using Groq AI")
+st.title("🤖 Rice Disease Classification (Groq AI)")
 
-client = Groq(api_key="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")
+# Groq client (OpenAI style)
+client = OpenAI(
+    api_key=os.environ.get("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"),
+    base_url="https://api.groq.com/openai/v1",
+)
 
 def image_to_base64(image):
     buffer = io.BytesIO()
@@ -21,14 +26,9 @@ if uploaded:
 
     img64 = image_to_base64(image)
 
-    response = client.chat.completions.create(
-        messages=[
-            {
-                "role": "user",
-                "content": f"Classify this rice disease image: data:image/png;base64,{img64}"
-            }
-        ],
-        model="llama-3.2-11b-vision-preview"
+    response = client.responses.create(
+        input=f"Classify this rice disease image. Image base64: {img64}",
+        model="openai/gpt-oss-20b"
     )
 
-    st.success(response.choices[0].message.content)
+    st.success(response.output_text)
