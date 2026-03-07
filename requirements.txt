@@ -1,14 +1,6 @@
 streamlit
-torch
-torchvision
-pillow
-numpy
-matplotlib
-pandas
-groq
-streamlit
-openai
 tensorflow
 numpy
 pillow
-streamlit
+matplotlib
+pandas
