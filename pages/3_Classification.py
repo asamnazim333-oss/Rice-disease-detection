@@ -1,37 +1,34 @@
 import streamlit as st
-import torch
-from torchvision import models, transforms
+from groq import Groq
 from PIL import Image
+import base64
+import io
 
-st.title("🤖 Classification")
+st.title("🤖 Classification using Groq AI")
 
-@st.cache_resource
-def load_model():
-    model = models.resnet50(weights=models.ResNet50_Weights.DEFAULT)
-    model.eval()
-    return model
+client = Groq(api_key="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")
 
-model = load_model()
+def image_to_base64(image):
+    buffer = io.BytesIO()
+    image.save(buffer, format="PNG")
+    return base64.b64encode(buffer.getvalue()).decode()
 
-transform = transforms.Compose([
-    transforms.Resize((224, 224)),
-    transforms.ToTensor(),
-])
-
-classes = ["Healthy", "Bacterial Blight", "Blast", "Brown Spot"]
-
-def predict(image):
-    img = transform(image).unsqueeze(0)
-    with torch.no_grad():
-        outputs = model(img)
-        _, pred = torch.max(outputs, 1)
-    return classes[pred % len(classes)]
-
-uploaded = st.file_uploader("Upload image", type=["jpg", "png", "jpeg"])
+uploaded = st.file_uploader("Upload Image", type=["jpg", "png", "jpeg"])
 
 if uploaded:
     image = Image.open(uploaded)
-    st.image(image, caption="Uploaded Image", use_column_width=True)
+    st.image(image, caption="Uploaded Image")
 
-    result = predict(image)
-    st.success(f"Prediction: {result}")
+    img64 = image_to_base64(image)
+
+    response = client.chat.completions.create(
+        messages=[
+            {
+                "role": "user",
+                "content": f"Classify this rice disease image: data:image/png;base64,{img64}"
+            }
+        ],
+        model="llama-3.2-11b-vision-preview"
+    )
+
+    st.success(response.choices[0].message.content)
