@@ -1,26 +1,22 @@
 import streamlit as st
 from PIL import Image
-import torchvision.transforms as transforms
+import numpy as np
 
 st.title("🧹 Preprocessing")
 
 st.write("""
-Preprocessing steps:
-1. Resize image to 224x224
-2. Convert to tensor
-3. Normalize values
+- Resize images to 224x224  
+- Normalize pixel values to 0-1  
+- Convert to array for model input
 """)
 
-uploaded = st.file_uploader("Upload image", type=["jpg", "png", "jpeg"])
-
+uploaded = st.file_uploader("Upload image to see preprocessing", type=["jpg", "png", "jpeg"])
 if uploaded:
     image = Image.open(uploaded)
     st.image(image, caption="Original Image", use_column_width=True)
 
-    transform = transforms.Compose([
-        transforms.Resize((224, 224)),
-        transforms.ToTensor(),
-    ])
+    img_resized = image.resize((224, 224))
+    st.image(img_resized, caption="Resized 224x224", use_column_width=True)
 
-    tensor = transform(image)
-    st.write("Tensor Shape:", tensor.shape)
+    img_array = np.array(img_resized)/255.0
+    st.write("Normalized array shape:", img_array.shape)
