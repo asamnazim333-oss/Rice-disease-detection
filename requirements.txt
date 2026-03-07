@@ -8,3 +8,7 @@ pandas
 groq
 streamlit
 openai
+tensorflow
+numpy
+pillow
+streamlit
