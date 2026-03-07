@@ -6,3 +6,5 @@ numpy
 matplotlib
 pandas
 groq
+streamlit
+openai
