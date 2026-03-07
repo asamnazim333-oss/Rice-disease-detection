@@ -30,7 +30,7 @@ def preprocess(image):
 uploaded = st.file_uploader("Upload Rice Leaf Image", type=["jpg", "png", "jpeg"])
 
 if uploaded:
-    image = Image.open(uploaded)
+    image = Image.open(uploaded).convert("RGB")
     st.image(image, caption="Uploaded Image", use_column_width=True)
 
     img = preprocess(image)
