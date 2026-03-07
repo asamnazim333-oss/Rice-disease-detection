@@ -13,7 +13,7 @@ def load_model():
 
 model = load_model()
 
-# Classes (as trained in model)
+# Classes (must match model training)
 classes = [
     "Healthy",
     "Brown spot",
