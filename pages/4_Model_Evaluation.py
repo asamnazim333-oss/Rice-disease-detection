@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 st.title("📈 Model Evaluation")
 
 model_path = "resnet152_model.h5"
-dataset_dir = "Dataset"
+dataset_dir = "dataset"
 
 if os.path.exists(model_path) and os.path.exists(dataset_dir):
     model = tf.keras.models.load_model(model_path)
