@@ -1,24 +1,31 @@
 import streamlit as st
-import pandas as pd
 import os
+import matplotlib.pyplot as plt
 
-st.title("📊 Dataset Overview")
+st.title("Rice Disease Dataset Overview")
 
-dataset_path = "dataset"  # folder where images exist
+dataset_path = "dataset"
 
-if os.path.exists(dataset_path):
-    classes = os.listdir(dataset_path)
-    st.write("Classes:", classes)
+classes = os.listdir(dataset_path)
 
-    total = 0
-    data = {}
+counts = []
 
-    for c in classes:
-        count = len(os.listdir(os.path.join(dataset_path, c)))
-        data[c] = count
-        total += count
+for c in classes:
+    path = os.path.join(dataset_path, c)
+    counts.append(len(os.listdir(path)))
 
-    st.write("Total Images:", total)
-    st.bar_chart(data)
-else:
-    st.warning("Dataset folder not found. Upload dataset or set correct path.")
+st.write("### Dataset Classes")
+
+for c in classes:
+    st.write(c)
+
+st.write("### Image Distribution")
+
+fig, ax = plt.subplots()
+
+ax.bar(classes, counts)
+
+ax.set_xlabel("Class")
+ax.set_ylabel("Number of Images")
+
+st.pyplot(fig)
