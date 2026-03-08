@@ -5,6 +5,14 @@ from model import load_model, predict
 
 st.title("🌾 Rice Disease Classification")
 
+# Disease info dictionary (define it early)
+disease_info = {
+    "Healthy": "Leaf is healthy with no disease symptoms.",
+    "Bacterial_Leaf_Blight": "Caused by bacteria Xanthomonas.",
+    "Leaf_Blast": "Fungal disease caused by Magnaporthe oryzae.",
+    "Brown_Spot": "Fungal infection causing brown lesions."
+}
+
 # Load model once
 @st.cache_resource
 def get_model():
@@ -34,20 +42,14 @@ if uploaded_file is not None:
             with st.spinner("Analyzing leaf..."):
 
                 img = image.resize((224,224))
-                img = np.array(img)/255.0
+                img = np.array(img) / 255.0
 
                 label, confidence = predict(model, img)
 
             st.success(f"Prediction: {label}")
-
-            st.info(f"Confidence: {confidence*100:.2f}%")
-
+            st.info(f"Confidence: {confidence * 100:.2f}%")
             st.progress(float(confidence))
-            disease_info = {
-"Healthy": "Leaf is healthy with no disease symptoms.",
-"Bacterial_Leaf_Blight": "Caused by bacteria Xanthomonas.",
-"Leaf_Blast": "Fungal disease caused by Magnaporthe oryzae.",
-"Brown_Spot": "Fungal infection causing brown lesions."
-}
 
-st.write(disease_info[label])
+            # Show disease info only if exists
+            info = disease_info.get(label, "No information available.")
+            st.write(info)
