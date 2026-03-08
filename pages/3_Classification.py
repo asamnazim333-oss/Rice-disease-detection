@@ -5,12 +5,13 @@ from model import load_model, predict
 
 st.title("🌾 Rice Disease Classification")
 
-# Disease info dictionary (define it early)
+# Disease info dictionary
 disease_info = {
     "Healthy": "Leaf is healthy with no disease symptoms.",
-    "Bacterial_Leaf_Blight": "Caused by bacteria Xanthomonas.",
-    "Leaf_Blast": "Fungal disease caused by Magnaporthe oryzae.",
-    "Brown_Spot": "Fungal infection causing brown lesions."
+    "Bacterial Blight": "Bacterial infection causing leaf blight.",
+    "Blast": "Fungal disease causing blast spots.",
+    "Brown Spot": "Fungal infection creating brown lesions.",
+    "Tungro": "Virus‑related disease affecting rice plants."
 }
 
 # Load model once
@@ -18,7 +19,7 @@ disease_info = {
 def get_model():
     return load_model()
 
-model = get_model()
+model_data = get_model()
 
 uploaded_file = st.file_uploader(
     "Upload Rice Leaf Image",
@@ -26,30 +27,18 @@ uploaded_file = st.file_uploader(
 )
 
 if uploaded_file is not None:
-
     image = Image.open(uploaded_file)
-
     col1, col2 = st.columns(2)
-
     with col1:
-        st.subheader("Uploaded Image")
         st.image(image, use_column_width=True)
 
     with col2:
-
         if st.button("Predict Disease"):
-
             with st.spinner("Analyzing leaf..."):
-
                 img = image.resize((224,224))
-                img = np.array(img) / 255.0
-
-                label, confidence = predict(model, img)
+                label, confidence = predict(model_data, img)
 
             st.success(f"Prediction: {label}")
             st.info(f"Confidence: {confidence * 100:.2f}%")
-            st.progress(float(confidence))
-
-            # Show disease info only if exists
             info = disease_info.get(label, "No information available.")
             st.write(info)
