@@ -13,11 +13,9 @@ def load_model():
 def predict(model_data, img):
     model, processor = model_data
 
-    # Convert image to RGB (important)
     if img.mode != "RGB":
         img = img.convert("RGB")
 
-    # No resizing — keep full resolution
     inputs = processor(images=img, return_tensors="pt")
 
     with torch.no_grad():
@@ -28,7 +26,7 @@ def predict(model_data, img):
 
     labels = ["Bacterial Blight", "Blast", "Brown Spot", "Healthy", "Tungro"]
 
-    # build dictionary of all probabilities
+    # dictionary of all probabilities
     pred_dict = {labels[i]: float(probs[i]) for i in range(len(labels))}
 
     # best prediction
