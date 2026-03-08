@@ -1,26 +1,53 @@
 import streamlit as st
-import tensorflow as tf
-from PIL import Image
 import numpy as np
+from PIL import Image
+from model import load_model, predict
 
-st.title("Image Augmentation Preview")
+st.title("🌾 Rice Disease Classification")
 
-uploaded_file = st.file_uploader("Upload Image")
+# Load model once
+@st.cache_resource
+def get_model():
+    return load_model()
 
-if uploaded_file:
+model = get_model()
+
+uploaded_file = st.file_uploader(
+    "Upload Rice Leaf Image",
+    type=["jpg", "jpeg", "png"]
+)
+
+if uploaded_file is not None:
 
     image = Image.open(uploaded_file)
-    img = np.array(image)
 
-    img = tf.image.resize(img,(224,224))
+    col1, col2 = st.columns(2)
 
-    flip = tf.image.flip_left_right(img)
-    rotate = tf.image.rot90(img)
-    bright = tf.image.adjust_brightness(img,0.3)
+    with col1:
+        st.subheader("Uploaded Image")
+        st.image(image, use_column_width=True)
 
-    col1,col2,col3,col4 = st.columns(4)
+    with col2:
 
-    col1.image(img.numpy().astype("uint8"), caption="Original")
-    col2.image(flip.numpy().astype("uint8"), caption="Flip")
-    col3.image(rotate.numpy().astype("uint8"), caption="Rotate")
-    col4.image(bright.numpy().astype("uint8"), caption="Brightness")
+        if st.button("Predict Disease"):
+
+            with st.spinner("Analyzing leaf..."):
+
+                img = image.resize((224,224))
+                img = np.array(img)/255.0
+
+                label, confidence = predict(model, img)
+
+            st.success(f"Prediction: {label}")
+
+            st.info(f"Confidence: {confidence*100:.2f}%")
+
+            st.progress(float(confidence))
+            disease_info = {
+"Healthy": "Leaf is healthy with no disease symptoms.",
+"Bacterial_Leaf_Blight": "Caused by bacteria Xanthomonas.",
+"Leaf_Blast": "Fungal disease caused by Magnaporthe oryzae.",
+"Brown_Spot": "Fungal infection causing brown lesions."
+}
+
+st.write(disease_info[label])
