@@ -76,3 +76,10 @@ ax.set_ylabel("Number of Images")
 ax.set_title("Images per Class")
 
 st.pyplot(fig)
+fig2, ax2 = plt.subplots()
+
+ax2.pie(counts, labels=classes, autopct='%1.1f%%')
+
+ax2.set_title("Class Distribution")
+
+st.pyplot(fig2)
