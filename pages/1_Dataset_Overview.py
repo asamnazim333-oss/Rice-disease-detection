@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 st.title("Rice Disease Dataset Overview")
 
-dataset_path = "dataset"
+dataset_path = "Dataset"
 
 classes = os.listdir(dataset_path)
 
