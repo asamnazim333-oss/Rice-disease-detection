@@ -1,22 +1,45 @@
 import streamlit as st
-from PIL import Image
+import cv2
 import numpy as np
+from PIL import Image
 
-st.title("🧹 Preprocessing")
+st.title("🧪 Image Preprocessing")
 
-st.write("""
-- Resize images to 224x224  
-- Normalize pixel values to 0-1  
-- Convert to array for model input
-""")
+uploaded_file = st.file_uploader(
+    "Upload Rice Leaf Image",
+    type=["jpg","png","jpeg"]
+)
 
-uploaded = st.file_uploader("Upload image to see preprocessing", type=["jpg", "png", "jpeg"])
-if uploaded:
-    image = Image.open(uploaded)
-    st.image(image, caption="Original Image", use_column_width=True)
+if uploaded_file is not None:
 
-    img_resized = image.resize((224, 224))
-    st.image(img_resized, caption="Resized 224x224", use_column_width=True)
+    image = Image.open(uploaded_file)
 
-    img_array = np.array(img_resized)/255.0
-    st.write("Normalized array shape:", img_array.shape)
+    st.subheader("Original Image")
+    st.image(image)
+
+    img = np.array(image)
+
+    # Resize
+    resized = cv2.resize(img, (224,224))
+
+    # Grayscale
+    gray = cv2.cvtColor(resized, cv2.COLOR_BGR2GRAY)
+
+    # Blur
+    blur = cv2.GaussianBlur(gray,(5,5),0)
+
+    # Edge detection
+    edges = cv2.Canny(blur,50,150)
+
+    st.subheader("Preprocessing Steps")
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        st.image(resized, caption="Resized Image")
+
+    with col2:
+        st.image(gray, caption="Grayscale")
+
+    with col3:
+        st.image(edges, caption="Edge Detection")
