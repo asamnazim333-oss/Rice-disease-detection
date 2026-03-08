@@ -64,3 +64,32 @@ fig, ax = plt.subplots()
 ax.imshow(matrix)
 
 st.pyplot(fig)
+import numpy as np
+import matplotlib.pyplot as plt
+import streamlit as st
+
+classes = [
+"Healthy",
+"Bacterial_Leaf_Blight",
+"Leaf_Blast",
+"Brown_Spot"
+]
+
+matrix = np.array([
+[50,2,1,0],
+[3,45,2,1],
+[1,3,47,2],
+[0,1,2,48]
+])
+
+fig, ax = plt.subplots()
+
+ax.imshow(matrix)
+
+ax.set_xticks(range(len(classes)))
+ax.set_yticks(range(len(classes)))
+
+ax.set_xticklabels(classes,rotation=45)
+ax.set_yticklabels(classes)
+
+st.pyplot(fig)
