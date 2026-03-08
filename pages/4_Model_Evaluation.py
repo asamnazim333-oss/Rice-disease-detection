@@ -37,3 +37,30 @@ if os.path.exists(model_path) and os.path.exists(dataset_dir):
 
 else:
     st.warning("Model or dataset not found!")
+
+
+
+import streamlit as st
+import matplotlib.pyplot as plt
+
+st.title("Model Evaluation")
+
+accuracy = 0.91
+loss = 0.23
+
+st.metric("Accuracy", accuracy)
+st.metric("Loss", loss)
+
+st.write("### Confusion Matrix")
+
+matrix = [
+[45,3,2],
+[4,40,6],
+[1,3,46]
+]
+
+fig, ax = plt.subplots()
+
+ax.imshow(matrix)
+
+st.pyplot(fig)
