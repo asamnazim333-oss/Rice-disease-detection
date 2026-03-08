@@ -93,3 +93,22 @@ ax.set_xticklabels(classes,rotation=45)
 ax.set_yticklabels(classes)
 
 st.pyplot(fig)
+import streamlit as st
+import matplotlib.pyplot as plt
+
+st.title("Training Visualization")
+
+train_acc = [0.60,0.72,0.81,0.88,0.92]
+val_acc = [0.58,0.70,0.79,0.85,0.90]
+
+fig, ax = plt.subplots()
+
+ax.plot(train_acc,label="Train Accuracy")
+ax.plot(val_acc,label="Validation Accuracy")
+
+ax.set_xlabel("Epoch")
+ax.set_ylabel("Accuracy")
+
+ax.legend()
+
+st.pyplot(fig)
