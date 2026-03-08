@@ -6,3 +6,6 @@ pandas
 matplotlib
 gdown
 opencv-python-headless
+torch
+torchvision
+transformers
