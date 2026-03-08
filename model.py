@@ -9,14 +9,15 @@ def load_model():
     processor = AutoImageProcessor.from_pretrained(model_name)
     return model, processor
 
+
 def predict(model_data, img):
     model, processor = model_data
 
-    # Convert image to RGB
+    # Convert image to RGB (important)
     if img.mode != "RGB":
         img = img.convert("RGB")
 
-    # Preprocess
+    # No resizing — keep full resolution
     inputs = processor(images=img, return_tensors="pt")
 
     with torch.no_grad():
@@ -27,8 +28,11 @@ def predict(model_data, img):
 
     labels = ["Bacterial Blight", "Blast", "Brown Spot", "Healthy", "Tungro"]
 
-    best_idx = int(np.argmax(probs))
-    label = labels[best_idx]
-    confidence = float(probs[best_idx])
+    # build dictionary of all probabilities
+    pred_dict = {labels[i]: float(probs[i]) for i in range(len(labels))}
 
-    return label, confidence
+    # best prediction
+    best_label = max(pred_dict, key=pred_dict.get)
+    best_conf = pred_dict[best_label]
+
+    return best_label, best_conf, pred_dict
