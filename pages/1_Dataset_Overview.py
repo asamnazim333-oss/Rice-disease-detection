@@ -35,23 +35,6 @@ ax.set_ylabel("Number of Images")
 
 st.pyplot(fig)
 
-st.write("### Sample Images")
-
-for c in classes:
-    folder = os.path.join(dataset_path, c)
-
-    st.write(f"#### {c}")
-
-    if os.path.exists(folder):
-        images = os.listdir(folder)  # show first 4 images
-
-        cols = st.columns(4)
-
-        for i, img in enumerate(images):
-            img_path = os.path.join(folder, img)
-            cols[i % 4].image(img_path, caption=img, use_container_width=True)
-    else:
-        st.write("No images found")
 import os
 import streamlit as st
 import matplotlib.pyplot as plt
@@ -83,3 +66,22 @@ ax2.pie(counts, labels=classes, autopct='%1.1f%%')
 ax2.set_title("Class Distribution")
 
 st.pyplot(fig2)
+
+
+st.write("### Sample Images")
+
+for c in classes:
+    folder = os.path.join(dataset_path, c)
+
+    st.write(f"#### {c}")
+
+    if os.path.exists(folder):
+        images = os.listdir(folder)  # show first 4 images
+
+        cols = st.columns(4)
+
+        for i, img in enumerate(images):
+            img_path = os.path.join(folder, img)
+            cols[i % 4].image(img_path, caption=img, use_container_width=True)
+    else:
+        st.write("No images found")
