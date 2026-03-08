@@ -43,7 +43,7 @@ for c in classes:
     st.write(f"#### {c}")
 
     if os.path.exists(folder):
-        images = os.listdir(folder)[:4]  # show first 4 images
+        images = os.listdir(folder)  # show first 4 images
 
         cols = st.columns(4)
 
