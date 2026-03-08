@@ -20,7 +20,7 @@ if uploaded_file:
 
     col1,col2,col3,col4 = st.columns(4)
 
-    col1.image(img, caption="Original")
-    col2.image(flip, caption="Flip")
-    col3.image(rotate, caption="Rotate")
-    col4.image(bright, caption="Brightness")
+    col1.image(img.numpy().astype("uint8"), caption="Original")
+    col2.image(flip.numpy().astype("uint8"), caption="Flip")
+    col3.image(rotate.numpy().astype("uint8"), caption="Rotate")
+    col4.image(bright.numpy().astype("uint8"), caption="Brightness")
