@@ -29,3 +29,10 @@ ax.set_xlabel("Class")
 ax.set_ylabel("Number of Images")
 
 st.pyplot(fig)
+st.write("### Sample Images")
+
+for c in classes:
+    folder = os.path.join(dataset_path, c)
+    image = os.listdir(folder)[0]
+    
+    st.image(os.path.join(folder, image), caption=c, width=200)
